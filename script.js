@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (formStatus) formStatus.textContent = 'Mengirim...';
 
-    emailjs.send('service_degczd9', 'template_569romm', {
+    emailjs.send('service_ukns1un', 'template_569romm', {
       title: 'Contact from Portfolio Website', // {{title}} di template
       name: name,                               // {{name}}
       email: email,                             // {{email}} (Reply-To)
