@@ -8,84 +8,71 @@ function $$(sel, ctx) {
 
 document.addEventListener('DOMContentLoaded', function () {
   /* ===== Theme Setup ===== */
-  var themeToggleBtn = $('#theme-toggle');
-
-  function setThemeFromSystem() {
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.body.classList.toggle('dark', prefersDark);
-    if (themeToggleBtn) themeToggleBtn.setAttribute('aria-pressed', prefersDark ? 'true' : 'false');
-  }
+  const themeToggleBtn = $('#theme-toggle');
 
   function applyStoredTheme() {
-    var stored = localStorage.getItem('theme-mode'); // 'dark' | 'light' | null
+    const stored = localStorage.getItem('theme-mode');
     if (stored === 'dark') {
       document.body.classList.add('dark');
-      if (themeToggleBtn) themeToggleBtn.setAttribute('aria-pressed', 'true');
+      themeToggleBtn?.setAttribute('aria-pressed', 'true');
       return true;
     } else if (stored === 'light') {
       document.body.classList.remove('dark');
-      if (themeToggleBtn) themeToggleBtn.setAttribute('aria-pressed', 'false');
+      themeToggleBtn?.setAttribute('aria-pressed', 'false');
       return true;
     }
-    return false; // no override
+    return false;
   }
 
-  // Apply override or system
+  function setThemeFromSystem() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark', prefersDark);
+    themeToggleBtn?.setAttribute('aria-pressed', prefersDark ? 'true' : 'false');
+  }
+
   if (!applyStoredTheme()) {
     setThemeFromSystem();
   }
 
-  // Update when system theme changes (only if no manual override)
-  var mq = window.matchMedia('(prefers-color-scheme: dark)');
-  mq.addEventListener('change', function () {
-    var hasOverride = localStorage.getItem('theme-mode') === 'dark' ||
-                      localStorage.getItem('theme-mode') === 'light';
-    if (!hasOverride) setThemeFromSystem();
+  themeToggleBtn?.addEventListener('click', function () {
+    const isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('theme-mode', isDark ? 'dark' : 'light');
+    themeToggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
   });
 
-  // Manual toggle
-  function manualToggleTheme() {
-    var isDark = document.body.classList.toggle('dark');
-    localStorage.setItem('theme-mode', isDark ? 'dark' : 'light');
-    if (themeToggleBtn) themeToggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-  }
-  if (themeToggleBtn) themeToggleBtn.addEventListener('click', manualToggleTheme);
-
   /* ===== Mobile Menu ===== */
-  var menuBtn = $('#menu-toggle');
-  var nav = $('.primary-nav');
+  const menuBtn = $('#menu-toggle');
+  const nav = $('.primary-nav');
   function toggleMenu() {
     if (!nav) return;
-    var open = nav.classList.toggle('open');
-    if (menuBtn) menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const open = nav.classList.toggle('open');
+    menuBtn?.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
-  if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
-  $$('[data-nav]').forEach(function (link) {
-    link.addEventListener('click', function () {
-      if (nav && nav.classList.contains('open')) toggleMenu();
+  menuBtn?.addEventListener('click', toggleMenu);
+  $$('[data-nav]').forEach(link => {
+    link.addEventListener('click', () => {
+      if (nav?.classList.contains('open')) toggleMenu();
     });
   });
 
   /* ===== Typing Effect ===== */
-  function typingEffect(strings, targetSel, speed, delayBetween) {
-    if (speed == null) speed = 80;
-    if (delayBetween == null) delayBetween = 1200;
-    var target = $(targetSel);
+  function typingEffect(strings, targetSel, speed = 80, delayBetween = 1200) {
+    const target = $(targetSel);
     if (!target || !strings || !strings.length) return;
-    var strIndex = 0, charIndex = 0, deleting = false;
+    let strIndex = 0, charIndex = 0, deleting = false;
 
     function tick() {
-      var cur = strings[strIndex];
+      const current = strings[strIndex];
       if (!deleting) {
-        target.textContent = cur.slice(0, charIndex++);
-        if (charIndex <= cur.length) {
+        target.textContent = current.slice(0, charIndex++);
+        if (charIndex <= current.length) {
           setTimeout(tick, speed);
         } else {
           deleting = true;
           setTimeout(tick, delayBetween);
         }
       } else {
-        target.textContent = cur.slice(0, charIndex--);
+        target.textContent = current.slice(0, charIndex--);
         if (charIndex >= 0) {
           setTimeout(tick, speed * 0.6);
         } else {
@@ -98,107 +85,81 @@ document.addEventListener('DOMContentLoaded', function () {
     tick();
   }
 
-  var typedStringsEls = $$('#typed-strings span');
+  const typedStringsEls = $$('#typed-strings span');
   if (typedStringsEls.length) {
-    var strings = typedStringsEls.map(function (e) { return e.textContent.trim(); }).filter(Boolean);
+    const strings = typedStringsEls.map(e => e.textContent.trim()).filter(Boolean);
     typingEffect(strings, '#typed-output');
   }
 
   /* ===== Project Filter ===== */
-  var filterBtns = $$('.filter-btn');
-  var cards = $$('#projects-grid .card');
+  const filterBtns = $$('.filter-btn');
+  const cards = $$('#projects-grid .card');
   function applyFilter(filter) {
-    cards.forEach(function (card) {
-      var cat = card.dataset.category || '';
-      var show = (filter === 'all' || cat === filter);
-      if (show) {
-        card.classList.remove('is-hidden');
-      } else {
-        card.classList.add('is-hidden');
-      }
+    cards.forEach(card => {
+      const cat = card.dataset.category || '';
+      const show = (filter === 'all' || cat === filter);
+      card.classList.toggle('is-hidden', !show);
     });
   }
-  filterBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      filterBtns.forEach(function (b) { b.classList.remove('active'); });
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       applyFilter(btn.dataset.filter);
     });
   });
 
   /* ===== ScrollSpy ===== */
-  var sections = ['about', 'projects', 'contact']
-    .map(function (id) { return document.getElementById(id); })
+  const sections = ['about', 'projects', 'contact']
+    .map(id => document.getElementById(id))
     .filter(Boolean);
-  var navLinks = $$('[data-nav]');
+  const navLinks = $$('[data-nav]');
   function onScrollSpy() {
-    var scrollPos = window.scrollY + window.innerHeight / 3;
-    var currentId = '';
-    sections.forEach(function (sec) {
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+    let currentId = '';
+    sections.forEach(sec => {
       if (sec.offsetTop <= scrollPos && (sec.offsetTop + sec.offsetHeight) > scrollPos) {
         currentId = sec.id;
       }
     });
-    navLinks.forEach(function (link) {
-      var href = link.getAttribute('href').replace('#','');
-      if (href === currentId) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
-      }
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href').replace('#', '');
+      link.classList.toggle('active', href === currentId);
     });
   }
   window.addEventListener('scroll', onScrollSpy);
   window.addEventListener('load', onScrollSpy);
 
-  /* ===== Contact Form (EmailJS-ready fallback) ===== */
-  var contactForm = $('#contact-form');
-  var formStatus = $('#form-status');
+  /* ===== Contact Form with EmailJS ===== */
+  const contactForm = $('#contact-form');
+  const formStatus = $('#form-status');
 
-  var EMAILJS_ENABLED = false; // ubah true kalau sudah punya ID
-  var EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-  var EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-  var EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+  // Inisialisasi EmailJS
+  emailjs.init('qzdec9wk4z3jKlyPH');
 
-  function sendViaEmailJS(data) {
-    if (!window.emailjs) return Promise.reject('EmailJS not loaded');
-    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data, EMAILJS_PUBLIC_KEY);
-  }
+  contactForm?.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = $('#name')?.value.trim();
+    const email = $('#email')?.value.trim();
+    const message = $('#message')?.value.trim();
 
-  function fallbackMailto(data) {
-    var subject = encodeURIComponent('Pesan dari Portfolio');
-    var body = encodeURIComponent('Nama: ' + data.name + '\nEmail: ' + data.email + '\nPesan:\n' + data.message);
-    window.location.href = 'mailto:' + data.to + '?subject=' + subject + '&body=' + body;
-  }
+    if (!name || !email || !message) {
+      formStatus.textContent = 'Lengkapi semua field.';
+      return;
+    }
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var formData = {
-        name: $('#name') ? $('#name').value.trim() : '',
-        email: $('#email') ? $('#email').value.trim() : '',
-        message: $('#message') ? $('#message').value.trim() : '',
-        to: 'gayuh@email.com'
-      };
-      if (!formData.name || !formData.email || !formData.message) {
-        if (formStatus) formStatus.textContent = 'Lengkapi semua field.';
-        return;
-      }
-      if (EMAILJS_ENABLED) {
-        if (formStatus) formStatus.textContent = 'Mengirim...';
-        sendViaEmailJS(formData)
-          .then(function () {
-            if (formStatus) formStatus.textContent = 'Terkirim! Terima kasih.';
-            contactForm.reset();
-          })
-          .catch(function () {
-            if (formStatus) formStatus.textContent = 'Gagal EmailJS. Membuka email...';
-            fallbackMailto(formData);
-          });
-      } else {
-        fallbackMailto(formData);
-        
-      }
+    formStatus.textContent = 'Mengirim...';
+
+    emailjs.send('service_degczd9', 'template_569romm', {
+      from_name: name,
+      from_email: email,
+      message: message
+    }).then(() => {
+      formStatus.textContent = '✅ Pesan terkirim! Terima kasih.';
+      contactForm.reset();
+    }).catch(err => {
+      console.error('EmailJS Error:', err);
+      formStatus.textContent = '❌ Gagal mengirim. Coba lagi.';
     });
-  }
+  });
 });
