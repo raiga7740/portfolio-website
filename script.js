@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const stored = localStorage.getItem('theme-mode');
     if (stored === 'dark') {
       document.body.classList.add('dark');
-      themeToggleBtn?.setAttribute('aria-pressed', 'true');
+      themeToggleBtn && themeToggleBtn.setAttribute('aria-pressed', 'true');
       return true;
     } else if (stored === 'light') {
       document.body.classList.remove('dark');
-      themeToggleBtn?.setAttribute('aria-pressed', 'false');
+      themeToggleBtn && themeToggleBtn.setAttribute('aria-pressed', 'false');
       return true;
     }
     return false;
@@ -27,14 +27,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function setThemeFromSystem() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.body.classList.toggle('dark', prefersDark);
-    themeToggleBtn?.setAttribute('aria-pressed', prefersDark ? 'true' : 'false');
+    themeToggleBtn && themeToggleBtn.setAttribute('aria-pressed', prefersDark ? 'true' : 'false');
   }
 
   if (!applyStoredTheme()) {
     setThemeFromSystem();
   }
 
-  themeToggleBtn?.addEventListener('click', function () {
+  themeToggleBtn && themeToggleBtn.addEventListener('click', function () {
     const isDark = document.body.classList.toggle('dark');
     localStorage.setItem('theme-mode', isDark ? 'dark' : 'light');
     themeToggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function toggleMenu() {
     if (!nav) return;
     const open = nav.classList.toggle('open');
-    menuBtn?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuBtn && menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
-  menuBtn?.addEventListener('click', toggleMenu);
+  menuBtn && menuBtn.addEventListener('click', toggleMenu);
   $$('[data-nav]').forEach(link => {
     link.addEventListener('click', () => {
-      if (nav?.classList.contains('open')) toggleMenu();
+      if (nav && nav.classList.contains('open')) toggleMenu();
     });
   });
 
@@ -134,32 +134,31 @@ document.addEventListener('DOMContentLoaded', function () {
   const contactForm = $('#contact-form');
   const formStatus = $('#form-status');
 
-  // Inisialisasi EmailJS
-  emailjs.init('qzdec9wk4z3jKlyPH');
-
-  contactForm?.addEventListener('submit', function (e) {
+  contactForm && contactForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    const name = $('#name')?.value.trim();
-    const email = $('#email')?.value.trim();
-    const message = $('#message')?.value.trim();
+
+    const name = $('#name') ? $('#name').value.trim() : '';
+    const email = $('#email') ? $('#email').value.trim() : '';
+    const message = $('#message') ? $('#message').value.trim() : '';
 
     if (!name || !email || !message) {
-      formStatus.textContent = 'Lengkapi semua field.';
+      if (formStatus) formStatus.textContent = '⚠ Lengkapi semua field.';
       return;
     }
 
-    formStatus.textContent = 'Mengirim...';
+    if (formStatus) formStatus.textContent = 'Mengirim...';
 
     emailjs.send('service_degczd9', 'template_569romm', {
-      from_name: name,
-      from_email: email,
-      message: message
+      title: 'Contact from Portfolio Website', // {{title}} di template
+      name: name,                               // {{name}}
+      email: email,                             // {{email}} (Reply-To)
+      message: message                          // {{message}}
     }).then(() => {
-      formStatus.textContent = '✅ Pesan terkirim! Terima kasih.';
+      if (formStatus) formStatus.textContent = '✅ Pesan terkirim! Terima kasih.';
       contactForm.reset();
     }).catch(err => {
       console.error('EmailJS Error:', err);
-      formStatus.textContent = '❌ Gagal mengirim. Coba lagi.';
+      if (formStatus) formStatus.textContent = '❌ Gagal mengirim. Coba lagi.';
     });
   });
 });

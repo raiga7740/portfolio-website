@@ -198,11 +198,9 @@
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.emailjs) {
-      emailjs.init('qzdec9wk4z3jKlyPH'); // GANTI dengan Public Key dari EmailJS
-    }
-  });
+  (function(){
+    emailjs.init('qzdec9wk4z3jKlyPH'); // Public Key
+  })();
 </script>
 
 <!-- Main Script -->
