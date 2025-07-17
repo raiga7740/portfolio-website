@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gayuh – Portfolio</title>
+  <meta name="description" content="Portfolio desain grafis minimalis & estetis oleh Gayuh: poster, konten sosial media, branding UMKM." />
+  <meta name="author" content="Gayuh" />
+
+  <!-- Open Graph / Social Share -->
+  <meta property="og:title" content="Gayuh – Portfolio" />
+  <meta property="og:description" content="Desain poster, konten sosial media, branding elegan & minimalis." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/profile.jpg" />
+  <meta property="og:url" content="https://example.com" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- AOS Animation CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Gayuh",
+    "jobTitle": "Graphic Designer",
+    "url": "https://example.com",
+    "image": "https://example.com/assets/profile.jpg",
+    "sameAs": [
+      "https://www.instagram.com/yourusername",
+      "https://www.linkedin.com/in/yourusername",
+      "https://www.behance.net/yourusername"
+    ]
+  }
+  </script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" role="banner">
+  <div class="container header-inner">
+    <a href="#" class="logo" aria-label="Go to top">Gayuh</a>
+
+    <nav id="primary-nav" class="primary-nav" role="navigation" aria-label="Primary">
+      <ul>
+        <li><a href="#about" data-nav>About</a></li>
+        <li><a href="#projects" data-nav>Projects</a></li>
+        <li><a href="#contact" data-nav>Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="toggle-dark" aria-pressed="false" aria-label="Toggle dark mode">🌗</button>
+      <button id="menu-toggle" class="menu-btn" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <!-- Hero -->
+  <section class="hero" data-aos="fade-up">
+    <div class="hero-media">
+      <img src="PICS/wuwa.png" alt="Photo of Gayuh" loading="lazy" />
+    </div>
+    <div class="hero-text">
+      <h1 class="hero-heading">Hi, I'm <span class="accent">Gayuh</span></h1>
+      <!-- Typing Effect target -->
+      <p class="hero-typed">
+        <span id="typed-strings">
+          <span>Graphic Designer.</span>
+          <span>Poster & Social Media Specialist.</span>
+          <span>Branding untuk UMKM.</span>
+          <span>Minimalist & Aesthetic Visuals.</span>
+        </span>
+        <span id="typed-output" aria-live="polite"></span>
+      </p>
+      <p class="hero-sub">Saya fokus membuat desain yang simple, elegan, dan efektif untuk promosi.</p>
+      <a href="#projects" class="btn btn-primary">Lihat Karya</a>
+      <a href="#contact" class="btn btn-ghost">Kontak</a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section about" id="about" data-aos="fade-right">
+    <div class="container narrow">
+      <h2 class="section-title">About Me</h2>
+      <p>Saya seorang desainer grafis dari Bogor yang suka membuat poster promosi, konten sosial media, dan desain branding minimalis untuk UMKM. Saya terbiasa menggunakan Photoshop, Canva, dan alat kreatif lainnya. Target saya: desain cepat, bersih, dan mudah dipakai untuk marketing digital.</p>
+      <div class="skills">
+        <span>Photoshop</span>
+        <span>Canva</span>
+        <span>Poster</span>
+        <span>Sosial Media</span>
+        <span>Branding</span>
+      </div>
+      <a href="assets/CV-Gayuh.pdf" class="btn btn-primary" download>Download CV</a>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section projects" id="projects" data-aos="zoom-in">
+    <div class="container">
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">Beberapa karya desain yang pernah saya buat. Filter berdasarkan kategori di bawah.</p>
+
+      <!-- Filter -->
+      <div class="filter-group" role="group" aria-label="Filter projects">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="poster">Poster</button>
+        <button class="filter-btn" data-filter="sosmed">Social Media</button>
+        <button class="filter-btn" data-filter="branding">Branding</button>
+      </div>
+
+      <div class="projects-grid" id="projects-grid">
+        <!-- Project 1 -->
+        <article class="card" data-category="poster">
+          <img src="assets/project1.jpg" alt="Poster promosi untuk brand lokal" loading="lazy" />
+          <h3>Poster Design</h3>
+          <p>Poster promosi minimalis untuk brand lokal makanan.</p>
+        </article>
+        <!-- Project 2 -->
+        <article class="card" data-category="sosmed">
+          <img src="assets/project2.jpg" alt="Konten sosial media promo diskon" loading="lazy" />
+          <h3>Social Media Ads</h3>
+          <p>Konten Instagram carousel & reels promo kampanye musiman.</p>
+        </article>
+        <!-- Project 3 -->
+        <article class="card" data-category="branding">
+          <img src="assets/project3.jpg" alt="Logo dan branding UMKM kreatif" loading="lazy" />
+          <h3>Branding UMKM</h3>
+          <p>Paket logo, palet warna, tipografi, dan template feed.</p>
+        </article>
+        <!-- Project 4 -->
+        <article class="card" data-category="poster">
+          <img src="assets/project4.jpg" alt="Poster event sekolah" loading="lazy" />
+          <h3>Event Poster</h3>
+          <p>Poster acara sekolah dengan gaya flat & warna pastel.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section contact" id="contact" data-aos="fade-up">
+    <div class="container narrow">
+      <h2 class="section-title">Contact Me</h2>
+      <p>Butuh desain untuk promosi? Kirim pesan di bawah atau hubungi lewat sosial media.</p>
+
+      <form id="contact-form" class="contact-form" novalidate>
+        <div class="form-field">
+          <label for="name">Nama</label>
+          <input type="text" id="name" name="name" required placeholder="Nama Anda" />
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="email@domain.com" />
+        </div>
+        <div class="form-field">
+          <label for="message">Pesan</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Tulis pesan Anda..." ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Kirim</button>
+        <p id="form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="contact-direct">
+        <p>Email langsung: <a href="mailto:gayuh@email.com">gayuh@email.com</a></p>
+        <p>WhatsApp: <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">+62 812-3456-7890</a></p>
+      </div>
+
+      <div class="social-links">
+        <a href="https://www.instagram.com/yourusername" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.behance.net/yourusername" target="_blank" rel="noopener">Behance</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <p>&copy; 2025 Gayuh. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+<script src="script.js" defer></script>
+<script>
+  // Safety init if AOS loads late
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.AOS) {
+      AOS.init({ duration: 1000, once: true });
+    }
+  });
+</script>
+</body>
+</html>
