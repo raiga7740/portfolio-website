@@ -163,9 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
-/* =========================================================
-   Cursor Line Trail Effect
-   ========================================================= */
+/* Cursor Effect */
 (function cursorLineTrail(){
   const canvas = document.getElementById('cursor-line');
   if (!canvas) return;
