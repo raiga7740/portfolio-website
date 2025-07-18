@@ -159,6 +159,72 @@ document.addEventListener('DOMContentLoaded', function () {
     }).catch(err => {
       console.error('EmailJS Error:', err);
       if (formStatus) formStatus.textContent = '❌ Gagal mengirim. Coba lagi.';
+      
     });
   });
 });
+/* =========================================================
+   Cursor Line Trail Effect
+   ========================================================= */
+(function cursorLineTrail(){
+  const canvas = document.getElementById('cursor-line');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  });
+
+  const points = [];
+  const maxPoints = 40; // Panjang trail
+  let targetX = 0, targetY = 0;
+  let drawX = 0, drawY = 0;
+  const ease = 0.25; // Kecepatan follow
+
+  window.addEventListener('mousemove', e => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+  });
+
+  function addPoint(x, y){
+    points.push({x, y, life: 1});
+    if (points.length > maxPoints) points.shift();
+  }
+
+  function update(){
+    drawX += (targetX - drawX) * ease;
+    drawY += (targetY - drawY) * ease;
+    addPoint(drawX, drawY);
+    for (let p of points) p.life -= 0.02;
+    for (let i = points.length - 1; i >= 0; i--){
+      if (points[i].life <= 0) points.splice(i, 1);
+    }
+  }
+
+  function render(){
+    ctx.clearRect(0,0,w,h);
+    if (points.length < 2) return;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    const grad = ctx.createLinearGradient(points[0].x, points[0].y, points[points.length-1].x, points[points.length-1].y);
+    grad.addColorStop(0, 'rgba(108,99,255,0)'); // Warna awal transparan
+    grad.addColorStop(1, 'rgba(108,99,255,0.8)'); // Warna akhir ungu
+    ctx.strokeStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+    ctx.stroke();
+  }
+
+  function loop(){
+    update();
+    render();
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
